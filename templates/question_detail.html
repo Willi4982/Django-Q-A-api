@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+	<p><a class="text-blue-700 hover:underline" href="/ui/questions/">&larr; ко всем вопросам</a></p>
+	<h1 class="text-2xl font-semibold mt-2 mb-1">Вопрос #{{ question.id }}</h1>
+	<p class="mb-6 text-gray-800">{{ question.text }}</p>
+
+	<h2 class="text-xl font-semibold mb-2">Ответы</h2>
+	<form method="post" action="/ui/questions/{{ question.id }}/delete/" class="mb-4">
+		{% csrf_token %}
+		<button class="text-sm px-3 py-1 border rounded text-red-700 border-red-300 hover:bg-red-50">Удалить вопрос</button>
+	</form>
+	<ul class="space-y-3 mb-6">
+		{% for a in answers %}
+			<li class="bg-white border rounded p-4">
+				<div class="flex items-start justify-between gap-4">
+					<div>
+						<div class="text-sm text-gray-500 mb-1">#{{ a.id }} от {{ a.user_id }} • {{ a.created_at }}</div>
+						<div>{{ a.text }}</div>
+					</div>
+					<form method="post" action="/ui/questions/{{ question.id }}/answers/{{ a.id }}/delete/">
+						{% csrf_token %}
+						<button class="text-sm px-2 py-1 border rounded text-red-700 border-red-300 hover:bg-red-50">Удалить</button>
+					</form>
+				</div>
+			</li>
+		{% empty %}
+			<li class="text-gray-500">Пока ответов нет</li>
+		{% endfor %}
+	</ul>
+
+	<h3 class="text-lg font-semibold mb-2">Добавить ответ</h3>
+	<form method="post" action="/ui/questions/{{ question.id }}/answers/create/" class="bg-white border rounded p-4">
+		{% csrf_token %}
+		<div class="grid grid-cols-1 gap-3">
+			<input name="user_id" class="border rounded px-3 py-2 bg-white text-gray-900 placeholder-gray-500" placeholder="user_id">
+			<input name="text" class="border rounded px-3 py-2 bg-white text-gray-900 placeholder-gray-500" placeholder="Текст ответа">
+		</div>
+		<button class="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Отправить</button>
+	</form>
+{% endblock %}
+
+

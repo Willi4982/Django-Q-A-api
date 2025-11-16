@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Q&amp;A</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<style>
+		/* make focus states visible */
+		a, button, input { outline-offset: 2px; }
+		/* force light inputs regardless of OS/browser dark mode */
+		body { color-scheme: light; }
+		input, textarea, select {
+			background-color: #ffffff;
+			color: #111827; /* gray-900 */
+		}
+		input::placeholder, textarea::placeholder {
+			color: #6b7280; /* gray-500 */
+		}
+	</style>
+	</head>
+<body class="bg-gray-50 text-gray-900">
+	<header class="bg-white border-b">
+		<nav class="max-w-3xl mx-auto flex items-center gap-4 p-4">
+			<a href="/ui/questions/" class="text-blue-600 hover:underline">UI: Вопросы</a>
+			<a href="/questions/" class="text-blue-600 hover:underline">API: /questions/</a>
+		</nav>
+	</header>
+	<main class="max-w-3xl mx-auto p-4">
+		{% if messages %}
+			<ul class="mb-4">
+				{% for m in messages %}
+					<li class="rounded px-3 py-2 mb-2 {% if m.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+						{{ m }}
+					</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+		{% block content %}{% endblock %}
+	</main>
+</body>
+</html>
+
+
